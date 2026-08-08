@@ -1,7 +1,7 @@
 {
   "project": "Daily Poem Dispatch — AJL14154 Modern Anglophone Poetry",
   "university": "Masaryk University, Autumn 2026",
-  "sender": "sqyu6893@agent.qq.com",
+  "sender": "545496152@qq.com",
   "receiver": "sylvabai@qq.com",
   "notes": "将 WorkBuddy 生成的诗歌导读内容添加到 issues 数组中。每期包含 date(发布日期), subject(邮件主题), html_body(邮件HTML内容)。脚本每天按日期匹配并发送。",
 
