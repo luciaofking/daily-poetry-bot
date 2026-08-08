@@ -28,7 +28,7 @@ now = datetime.now(BJT)
 today_str = now.strftime("%Y-%m-%d")
 
 # SMTP 配置（从 GitHub Secrets 读取）
-SMTP_SERVER = os.environ.get("SMTP_SERVER", "smtp.qq.com")
+SMTP_SERVER = os.environ.get("SMTP_SERVER", "")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "465"))
 SENDER_EMAIL = os.environ.get("SENDER_EMAIL", "")
 SENDER_PASSWORD = os.environ.get("SENDER_PASSWORD", "")
