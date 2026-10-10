@@ -5,7 +5,7 @@
 
 工作原理：
 1. 读取 poetry_data.json 中的诗歌导读内容
-2. 根据当天日期匹配对应的 issue
+2. 根据当天日期精确匹配对应的 issue（当天没有就不发）
 3. 通过 SMTP 发送 HTML 邮件到指定邮箱
 
 内容准备方式：
@@ -54,31 +54,25 @@ def load_data():
 def find_today_issue(data):
     """
     查找今天的诗歌内容
-    优先精确匹配日期，如果没有则查找最近的未发送内容
+    只发送 date 与今天完全一致的那一期；当天没有内容就不发。
+    （不回退到过去的内容，否则同一期会每天重复发送。）
     """
     issues = data.get("issues", [])
     if not issues:
         print("错误：数据文件中没有 issue")
         return None
 
-    # 1. 尝试精确匹配今天的日期
     for issue in issues:
         if issue.get("date") == today_str:
             print(f"找到今日内容: {issue.get('subject', '无标题')}")
             return issue
 
-    # 2. 如果没有精确匹配，找第一个日期 <= 今天的未发送内容
-    for issue in issues:
-        issue_date = issue.get("date", "")
-        if issue_date and issue_date <= today_str:
-            print(f"使用最近内容: {issue.get('subject', '无标题')} (日期: {issue_date})")
-            return issue
-
-    # 3. 如果都没有，说明还没有到任何内容的发布日期
-    print(f"今天 ({today_str}) 没有可发送的内容")
-    future_dates = [i.get("date", "?") for i in issues if i.get("date", "") > today_str]
+    print(f"今天 ({today_str}) 没有安排内容")
+    future_dates = sorted(i.get("date", "") for i in issues if i.get("date", "") > today_str)
     if future_dates:
-        print(f"最近的发布日期: {future_dates[0]}")
+        print(f"下一期发布日期: {future_dates[0]}")
+    else:
+        print("poetry_data.json 中没有未来日期的内容，请添加新的一期")
     return None
 
 
