@@ -73,6 +73,8 @@ def find_today_issue(data):
         print(f"下一期发布日期: {future_dates[0]}")
     else:
         print("poetry_data.json 中没有未来日期的内容，请添加新的一期")
+        # 让这次运行失败，GitHub 会发邮件提醒仓库主人内容已经用完
+        sys.exit(1)
     return None
 
 
